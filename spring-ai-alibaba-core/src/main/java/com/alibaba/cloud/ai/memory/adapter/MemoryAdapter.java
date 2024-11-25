@@ -3,6 +3,7 @@ package com.alibaba.cloud.ai.memory.adapter;
 import com.alibaba.cloud.ai.memory.chatmemory.BufferWindowMemory;
 import com.alibaba.cloud.ai.memory.entity.ChatMemoryProperties;
 import com.alibaba.cloud.ai.memory.entity.ChatMessage;
+import com.alibaba.cloud.ai.memory.enums.MemoryTypeEnum;
 import com.alibaba.cloud.ai.memory.handler.MemoryHandler;
 import com.alibaba.cloud.ai.memory.persistence.ElasticsearchPersistence;
 import org.slf4j.Logger;
@@ -31,8 +32,9 @@ public class MemoryAdapter {
 	private MemoryHandler memoryHandler;
 
 	public void init(String memoryType) {
-		switch (memoryType.toLowerCase()) {
-			case "bufferwindow" -> this.memoryHandler = bufferWindowMemory;
+		MemoryTypeEnum anEnum = MemoryTypeEnum.getEnum(memoryType.toLowerCase());
+		switch (anEnum) {
+			case BUFFERWINDOW -> this.memoryHandler = bufferWindowMemory;
 			default -> throw new IllegalArgumentException("Unsupported memory type: " + memoryType);
 		}
 	}

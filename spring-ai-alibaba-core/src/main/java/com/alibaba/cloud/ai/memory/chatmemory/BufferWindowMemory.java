@@ -9,13 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Title fixed window size of memory.<br>
- * Description Handles memory logic of fixed window size .<br>
- *
- * @author zhych1005
- * @since 1.0.0-M3
- */
 
 @Component
 public class BufferWindowMemory implements MemoryHandler {
@@ -23,11 +16,12 @@ public class BufferWindowMemory implements MemoryHandler {
 	@Override
 	public void addMessage(String conversationId, ChatMessage message, String question,
 			PersistenceAdapter persistenceAdapter, ChatMemoryProperties properties) {
-		ChatMessage inputMessage = new ChatMessage();
-		inputMessage.setRole(RoleTypeEnum.USER.getRoleName());
-		inputMessage.setContent(question);
-		inputMessage.setInputTokens(message.getInputTokens());
-		inputMessage.setCreatedAt(System.currentTimeMillis());
+		ChatMessage inputMessage = ChatMessage.builder()
+				.role(RoleTypeEnum.USER.getRoleName())
+				.content(question)
+				.inputTokens(message.getInputTokens())
+				.createdAt(System.currentTimeMillis())
+				.build();
 		message.setCreatedAt(System.currentTimeMillis());
 		List<ChatMessage> messages = persistenceAdapter.getMessages(conversationId, 0);
 		messages.add(inputMessage);

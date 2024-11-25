@@ -1,5 +1,6 @@
 package com.alibaba.cloud.ai.memory.adapter;
 
+import com.alibaba.cloud.ai.memory.enums.PersistenceEnum;
 import com.alibaba.cloud.ai.memory.handler.PersistenceHandler;
 import com.alibaba.cloud.ai.memory.entity.ChatMessage;
 import com.alibaba.cloud.ai.memory.persistence.ElasticsearchPersistence;
@@ -33,10 +34,10 @@ public class PersistenceAdapter {
 	private PersistenceHandler persistenceHandler;
 
 	public void init(String storageType) {
-		switch (storageType.toLowerCase()) {
-			case "mysql" -> this.persistenceHandler = mySQLPersistence;
-			case "redis" -> this.persistenceHandler = redisPersistence;
-			case "es" -> this.persistenceHandler = elasticsearchPersistence;
+		switch (PersistenceEnum.getEnum(storageType.toLowerCase())) {
+			case MYSQL -> this.persistenceHandler = mySQLPersistence;
+			case REDIS -> this.persistenceHandler = redisPersistence;
+			case ES -> this.persistenceHandler = elasticsearchPersistence;
 			default -> throw new IllegalArgumentException("Unsupported storage type: " + storageType);
 		}
 	}
